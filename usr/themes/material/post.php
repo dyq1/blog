@@ -4,9 +4,9 @@
 
     <main class="material-layout__content" id="main">
         <div id="top"></div>
-        <!-- Sidebar hamburger button -->
+        <!-- Hamburger Button -->
         <button class="MD-burger-icon sidebar-toggle">
-            <span class="MD-burger-layer"></span>
+            <span id="MD-burger-id" class="MD-burger-layer"></span>
         </button>
 
         <!-- Post module -->
@@ -45,13 +45,16 @@
                         </span>
                         </div>
                         <div class="section-spacer"></div>
+                        <?php if (getThemeOptions("qrcode") != 3): ?>
                         <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
                             <i class="material-icons" role="presentation">devices other</i>
                             <span class="visuallyhidden">devices other</span>
                         </button>
                         <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
-                            <img src="https://pan.baidu.com/share/qrcode?w=246&h=246&url=<?php $this->permalink(); ?>">
+                            <li class="mdl-menu__item"><?php lang("post.qrcode") ?></li>
+                            <img src="<?php getQRCode($this->permalink); ?>">
                         </ul>
+                        <?php endif; ?>
                         <!-- view tags -->
                         <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
                             <!-- For modern browsers. -->

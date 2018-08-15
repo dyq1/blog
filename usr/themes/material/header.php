@@ -59,7 +59,7 @@
         <meta property="og:release_date" content="<?php $this->date('Y-m-j'); ?>" />
         <meta property="og:title" content="<?php $this->options->title(); ?>" />
         <meta property="og:image" content="<?php showThumbnail($this); ?>" />
-        <meta property="og:description" content="<?php $this->description() ?>" />
+        <meta property="og:description" content="<?php (getDescription()) ? NULL : $this->options->description(); ?>" />
         <meta property="og:author" content="<?php $this->author(); ?>" />
         <meta property="article:published_time" content="<?php $this->date('Y-m-j'); ?>" />
         <meta property="article:modified_time" content="<?php $this->date('Y-m-j'); ?>" />
@@ -82,7 +82,7 @@
     <!-- The Twitter Card protocol -->
     <?php if ($this->is("post") || $this->is("page")): ?>
     <meta name="twitter:title" content="<?php $this->archiveTitle(); ?>">
-    <meta name="twitter:description" content="<?php $this->options->description() ?>">
+    <meta name="twitter:description" content="<?php (getDescription()) ? NULL : $this->options->description(); ?>">
     <meta name="twitter:image" content="<?php $this->options->favicon() ?>">
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="<?php $this->permalink(); ?>" />

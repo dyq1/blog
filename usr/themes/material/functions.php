@@ -1,6 +1,6 @@
 <?php
 
-define("MATERIAL_VERSION", "3.2.1");
+define("MATERIAL_VERSION", "3.2.2");
 
 require_once("lib/UACheck.php");
 require_once("lib/pangu.php");
@@ -31,7 +31,6 @@ function jsLsload($name, $uri)
 {
     $options = Helper::options();
     $identifier = $name . $uri . filemtime($options->themeFile(getTheme(), $uri)) . MATERIAL_VERSION;
-    //$md5 = md5(file_get_contents($options->themeFile(getTheme(), $uri)));
     $hash = md5($identifier);
     echo '<script>lsloader.load("' . $name . '","' . getThemeFile($uri) . '?' . $hash . '", true)</script>';
 }
@@ -45,7 +44,6 @@ function cssLsload($name, $uri)
 {
     $options = Helper::options();
     $identifier = $name . $uri . filemtime($options->themeFile(getTheme(), $uri)) . MATERIAL_VERSION;
-    //$md5 = md5(file_get_contents($options->themeFile(getTheme(), $uri)));
     $hash = md5($identifier);
     echo '<style id="' . $name . '"></style>';
     echo '<script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("' . $name . '","' . getThemeFile($uri) . '?' . $hash . '",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>';
@@ -115,8 +113,31 @@ function themeInit($archive)
 }
 
 /**
+ * 获取二维码
+ * @param string permalink
+ */
+function getQRCode($permalink) {
+    $qrcode = getThemeOptions("qrcode");
+    if ($qrcode === NULL) $qrcode = 0;
+    $src = "";
+    switch ($qrcode) {
+        case 0:
+            $src = "https://api.lwl12.com/img/qrcode/get?ct=$permalink&w=200&h=200";
+            break;
+        case 1:
+            $src = "https://api.imjad.cn/qrcode/?text=$permalink&size=200&level=L";
+            break;
+        case 2:
+            $src = "https://chart.apis.google.com/chart?chs=200x200&cht=qr&chld=H|1&chl=$permalink";
+            break;
+    }
+    echo $src;
+    return $src;
+}
+
+/**
  * 文章缩略图
- * @param $widget $widget
+ * @param Typecho_Widget $widget
  */
 function showThumbnail($widget)
 {
@@ -150,7 +171,7 @@ function showThumbnail($widget)
 
 /**
  * 随机缩略图
- * @param $widget $widget
+ * @param Typecho_Widget $widget
  */
 function randomThumbnail($widget)
 {
@@ -240,8 +261,8 @@ function pangu($html_source)
 function getDescription() {
     global $t;
     if ($t->is("post") || $t->is("page")) {
-        if(isset($t->fields->description) && $t->fields->description){
-            echo $widget->fields->description;
+        if ($t->fields->description != ""){
+            echo $t->fields->description;
         } else {
             $t->excerpt(80, '...');
         }

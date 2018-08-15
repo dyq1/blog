@@ -4,7 +4,7 @@
  *
  * @package Material
  * @author 黎明余光
- * @version 3.2.1
+ * @version 3.2.2
  * @link https://blog.lim-light.com
  */
 
@@ -19,7 +19,7 @@ $this->need('header.php');?>
 
         <!-- Hamburger Button -->
         <button class="MD-burger-icon sidebar-toggle">
-            <span class="MD-burger-layer"></span>
+            <span id="MD-burger-id" class="MD-burger-layer"></span>
         </button>
 
         <div class="material-index mdl-grid">
@@ -184,7 +184,7 @@ $this->need('header.php');?>
 
                             <!-- Article content -->
                             <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-                                <?php $this->excerpt(80, '...'); ?> &nbsp;&nbsp;&nbsp;
+                                <?php ($this->fields->description != "") ? $this->fields->description() : $this->excerpt(80, '...'); ?> &nbsp;&nbsp;&nbsp;
                                 <span>
                                 <a href="<?php $this->permalink(); ?>" target="_self">
                                 <?php lang("post.continue") ?>
